@@ -29,7 +29,7 @@ def lambda_handler(event, context):
     login_daten['sessiontest'] = sessiontest
 
     # Login mit Username+PW+SessionTest
-    login = session.post(url= 'https://www.opc-asp.de/speisezeit/index.php?LogIn=true', data=login_daten)
+    login = session.post(url=os.environ["LfsSpeisezeitBaseUrl"] + '/index.php?LogIn=true', data=login_daten)
 
     if "Die eingegeben Benutzerdaten sind nicht korrekt" in login.text:
             return {
