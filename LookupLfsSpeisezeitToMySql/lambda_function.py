@@ -78,8 +78,8 @@ def lambda_handler(event, context):
     #sql = "INSERT INTO lfs_speisezeit_guthaben (zeitpunkt, kind_id, guthaben, kommentar) VALUES (NOW(), 1, %s, %s)"
     # INSERT if:
     # 1. guthaben has changed
-    # 2. last entry is more than 48 hours ago
-    sql = "INSERT INTO lfs_speisezeit_guthaben (zeitpunkt, kind_id, guthaben, kommentar) SELECT NOW() as zeitpunkt, 1 as kind_id, %s as new_guthaben, %s as kommentar FROM lfs_speisezeit_guthaben WHERE %s IN (SELECT guthaben FROM lfs_speisezeit_guthaben WHERE kind_id=1 AND zeitpunkt = (SELECT max(zeitpunkt) FROM lfs_speisezeit_guthaben WHERE kind_id=1 HAVING MAX(zeitpunkt) > NOW() - INTERVAL 48 HOUR)) HAVING COUNT(*) = 0"
+    # 2. last entry is more than 14 days ago
+    sql = "INSERT INTO lfs_speisezeit_guthaben (zeitpunkt, kind_id, guthaben, kommentar) SELECT NOW() as zeitpunkt, 1 as kind_id, %s as new_guthaben, %s as kommentar FROM lfs_speisezeit_guthaben WHERE %s IN (SELECT guthaben FROM lfs_speisezeit_guthaben WHERE kind_id=1 AND zeitpunkt = (SELECT max(zeitpunkt) FROM lfs_speisezeit_guthaben WHERE kind_id=1 HAVING MAX(zeitpunkt) > NOW() - INTERVAL 336 HOUR)) HAVING COUNT(*) = 0"
     val = (guthaben, None, guthaben)
     mycursor.execute(sql, val)
 
